@@ -34,6 +34,16 @@ export const PaintMain: FC = () => {
       tool.fillColor = '#000000';
     }
 
+    if (toolType === 'rect') {
+      tool.strokeColor = '#000000';
+      tool.fillColor = '#000000';
+    }
+
+    if (toolType === 'line') {
+      tool.strokeColor = '#000000';
+      tool.fillColor = '#000000';
+    }
+
     setTool(tool);
   };
 
