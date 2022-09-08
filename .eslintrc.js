@@ -108,7 +108,7 @@ module.exports = {
         },
       },
     ],
-    '@typescript-eslint/explicit-member-accessibility': [types.ERROR],
+    '@typescript-eslint/explicit-member-accessibility': [types.OFF],
     '@typescript-eslint/func-call-spacing': [types.ERROR, 'never'],
     '@typescript-eslint/no-for-in-array': types.ERROR,
     '@typescript-eslint/no-require-imports': types.ERROR,
