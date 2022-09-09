@@ -1,56 +1,70 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import Brush from '../tools/Brush';
-import { TOOL_TYPE, ToolType, ToolTypeName } from '../types';
+import { TOOL_TYPE, ToolInstanceType, ToolTypeName } from '../types';
 import { ToolBar } from '../ToolBar';
+import { TOOLS_WITH_CLASSIC_PROPERTIES } from '../config';
 import styles from './PaintMain.module.scss';
 
 export const PaintMain: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [tool, setTool] = useState<ToolType | null>(null);
+  const [tool, setTool] = useState<ToolInstanceType | null>(null);
+
+  const [fillStyle, setFillStyle] =
+    useState<CanvasRenderingContext2D['fillStyle']>('#000000');
+
+  const [strokeStyle, setStrokeStyle] =
+    useState<CanvasRenderingContext2D['strokeStyle']>('#000000');
+
+  const [lineWidth, setLineWidth] = useState<number>(3);
+
+  useEffect(() => {
+    if (tool) {
+      tool.strokeColor = strokeStyle;
+      tool.fillColor = fillStyle;
+      tool.lineWidth = lineWidth;
+    }
+  }, [fillStyle, strokeStyle, lineWidth]);
 
   useEffect(() => {
     if (canvasRef.current) {
-      const brush = new Brush(canvasRef.current);
-      setTool(brush);
+      createTool('brush');
     }
   }, []);
 
-  const handleSetTool = (toolType: ToolTypeName) => {
+  const createTool = (toolType: ToolTypeName) => {
     if (!canvasRef.current) {
       return;
     }
     const tool = new TOOL_TYPE[toolType](canvasRef.current);
-    if (toolType === 'brush') {
-      tool.strokeColor = '#000000';
-      tool.fillColor = '#000000';
-    }
-    if (toolType === 'eraser') {
+
+    if (TOOLS_WITH_CLASSIC_PROPERTIES.includes(toolType)) {
+      tool.strokeColor = strokeStyle;
+      tool.fillColor = fillStyle;
+      tool.lineWidth = lineWidth;
+    } else if (toolType === 'eraser') {
       tool.strokeColor = '#FFFFFF';
-      tool.fillColor = '#FFFFFF1';
-    }
-
-    if (toolType === 'circle') {
-      tool.strokeColor = '#000000';
-      tool.fillColor = '#000000';
-    }
-
-    if (toolType === 'rect') {
-      tool.strokeColor = '#000000';
-      tool.fillColor = '#000000';
-    }
-
-    if (toolType === 'line') {
-      tool.strokeColor = '#000000';
-      tool.fillColor = '#000000';
+      tool.fillColor = '#FFFFFFF';
+      tool.lineWidth = lineWidth;
     }
 
     setTool(tool);
   };
 
+  const handleSetTool = (toolType: ToolTypeName) => {
+    if (!canvasRef.current) {
+      createTool(toolType);
+    }
+  };
+
   return (
     <div className={styles.wrap}>
       <div>
-        <ToolBar setTool={handleSetTool} />
+        <ToolBar
+          setTool={handleSetTool}
+          setFillStyle={setFillStyle}
+          setStrokeStyle={setStrokeStyle}
+          lineWidth={lineWidth}
+          setLineWidth={setLineWidth}
+        />
       </div>
       <div>
         <canvas

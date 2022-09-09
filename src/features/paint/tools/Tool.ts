@@ -16,7 +16,7 @@ export default class Tool {
   set fillColor(color: CanvasRenderingContext2D['fillStyle']) {
     this.ctx.fillStyle = color;
   }
-  set strokeColor(color: CanvasRenderingContext2D['fillStyle']) {
+  set strokeColor(color: CanvasRenderingContext2D['strokeStyle']) {
     this.ctx.strokeStyle = color;
   }
 

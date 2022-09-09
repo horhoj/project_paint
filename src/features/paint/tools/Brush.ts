@@ -36,7 +36,6 @@ export default class Brush extends Tool {
   }
 
   draw(x: number, y: number): void {
-    this.ctx.fillStyle = 'rgb(200, 0, 0)';
     this.ctx.lineTo(x, y);
     this.ctx.stroke();
   }

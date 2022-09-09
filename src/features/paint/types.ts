@@ -14,4 +14,4 @@ export const TOOL_TYPE = {
 
 export type ToolTypeName = keyof typeof TOOL_TYPE;
 
-export type ToolType = Brush | Eraser | Circle | Line | Rect;
+export type ToolInstanceType = InstanceType<typeof TOOL_TYPE[ToolTypeName]>;
