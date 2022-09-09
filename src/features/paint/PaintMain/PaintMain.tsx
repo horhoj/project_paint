@@ -51,8 +51,9 @@ export const PaintMain: FC = () => {
 
   const handleSetTool = (toolType: ToolTypeName) => {
     if (!canvasRef.current) {
-      createTool(toolType);
+      return;
     }
+    createTool(toolType);
   };
 
   return (
