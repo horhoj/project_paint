@@ -39,9 +39,19 @@ export const ToolBar: FC<ToolBarProps> = ({
         rect
       </button>
 
+      <button className={styles.toolButton} onClick={() => setTool('marker')}>
+        marker
+      </button>
+
       <span className={styles.toolColor}>
         <label>fill</label>
-        <input type="color" onChange={(e) => setFillStyle(e.target.value)} />
+        <input
+          type="color"
+          onChange={(e) => {
+            console.log(123123);
+            setFillStyle(e.target.value);
+          }}
+        />
       </span>
 
       <span className={styles.toolColor}>

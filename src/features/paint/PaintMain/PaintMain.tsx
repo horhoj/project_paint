@@ -14,7 +14,7 @@ export const PaintMain: FC = () => {
   const [strokeStyle, setStrokeStyle] =
     useState<CanvasRenderingContext2D['strokeStyle']>('#000000');
 
-  const [lineWidth, setLineWidth] = useState<number>(3);
+  const [lineWidth, setLineWidth] = useState<number>(10);
 
   useEffect(() => {
     if (tool) {
@@ -34,19 +34,24 @@ export const PaintMain: FC = () => {
     if (!canvasRef.current) {
       return;
     }
-    const tool = new TOOL_TYPE[toolType](canvasRef.current);
+    if (tool) {
+      tool.destroyEvents();
+    }
+    const newTool = new TOOL_TYPE[toolType](canvasRef.current);
+    newTool.ctx.globalAlpha = 1;
 
     if (TOOLS_WITH_CLASSIC_PROPERTIES.includes(toolType)) {
-      tool.strokeColor = strokeStyle;
-      tool.fillColor = fillStyle;
-      tool.lineWidth = lineWidth;
+      newTool.ctx.globalAlpha = 1;
+      newTool.strokeColor = strokeStyle;
+      newTool.fillColor = fillStyle;
+      newTool.lineWidth = lineWidth;
     } else if (toolType === 'eraser') {
-      tool.strokeColor = '#FFFFFF';
-      tool.fillColor = '#FFFFFFF';
-      tool.lineWidth = lineWidth;
+      newTool.strokeColor = '#FFFFFF';
+      newTool.fillColor = '#FFFFFFF';
+      newTool.lineWidth = lineWidth;
     }
 
-    setTool(tool);
+    setTool(newTool);
   };
 
   const handleSetTool = (toolType: ToolTypeName) => {
